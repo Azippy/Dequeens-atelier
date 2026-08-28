@@ -26,16 +26,9 @@ cd fashion
 npm install
 ```
 
-Create a `.env` file in the project root:
+Create a private `.env` file in the project root with the configuration required by the application. Do not add its contents to this README, commit it, or share it publicly.
 
-```dotenv
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/dequeens-atelier
-JWT_SECRET=replace-with-a-long-random-secret
-JWT_EXPIRES_IN=1h
-```
-
-Keep `.env` private and do not commit it. Any database password or JWT secret that has been shared publicly should be rotated immediately.
+Use strong, unique values for database credentials and signing secrets. Rotate any credentials that may already have been exposed.
 
 ## Running the API
 
@@ -57,18 +50,13 @@ GET /
 
 ## Create an admin user
 
-The included script creates the default admin account if it does not already exist:
+The included script creates an admin account if it does not already exist:
 
 ```bash
 npm run create-admin
 ```
 
-The script currently uses:
-
-- Email: `admin@dequeensatelier.com`
-- Password: `ChangeThisPassword123!`
-
-Change this password after the first login and consider moving the initial credentials to environment variables before production use.
+Review the admin bootstrap script before running it and change its initial credentials. Never publish those credentials or commit them to source control. For production use, move admin credentials into secure environment variables or a secrets manager.
 
 ## Authentication
 
