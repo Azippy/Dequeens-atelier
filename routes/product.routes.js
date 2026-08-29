@@ -7,6 +7,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/product.controller.js";
+import { uploadProductImages } from "../middleware/upload.middleware.js";
 
 import protect from "../middleware/auth.middleware.js";
 import authorize from "../middleware/authorize.middleware.js";
@@ -18,7 +19,13 @@ router.get("/", getProducts);
 router.get("/:id", getProduct);
 
 // Admin routes
-router.post("/", protect, authorize("admin"), createProduct);
+router.post(
+  "/",
+  protect,
+  authorize("admin"),
+  uploadProductImages,
+  createProduct,
+);
 
 router.patch("/:id", protect, authorize("admin"), updateProduct);
 

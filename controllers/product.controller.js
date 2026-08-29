@@ -1,6 +1,7 @@
 import Product from "../models/product.model.js";
 import AppError from "../utils/appError.js";
 import Category from "../models/category.model.js";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
 export const createProduct = async (req, res, next) => {
   try {
@@ -14,18 +15,31 @@ export const createProduct = async (req, res, next) => {
       gender,
       sizes,
       colors,
-      images,
       stock,
       isReadyToWear,
       isBespoke,
       isFeatured,
     } = req.body;
 
-    // Check that the category exists
     const existingCategory = await Category.findById(category);
 
     if (!existingCategory) {
       throw new AppError("Category not found", 404);
+    }
+
+    let imageUrls = [];
+
+    if (req.files && req.files.length > 0) {
+      const uploadedImages = await Promise.all(
+        req.files.map((file) =>
+          uploadToCloudinary(file.buffer, "dequeens-atelier/products"),
+        ),
+      );
+
+      imageUrls = uploadedImages.map((image) => ({
+        url: image.secure_url,
+        publicId: image.public_id,
+      }));
     }
 
     const product = await Product.create({
@@ -38,7 +52,7 @@ export const createProduct = async (req, res, next) => {
       gender,
       sizes,
       colors,
-      images,
+      images: imageUrls,
       stock,
       isReadyToWear,
       isBespoke,

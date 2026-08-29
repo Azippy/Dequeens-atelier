@@ -60,7 +60,14 @@ const productSchema = new mongoose.Schema(
 
     images: [
       {
-        type: String,
+        url: {
+          type: String,
+          required: true,
+        },
+        publicId: {
+          type: String,
+          required: true,
+        },
       },
     ],
 
@@ -68,6 +75,12 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
       min: [0, "Stock cannot be negative"],
+    },
+
+    reservedStock: {
+      type: Number,
+      default: 0,
+      min: [0, "Reserved stock cannot be negative"],
     },
 
     isReadyToWear: {
@@ -92,8 +105,27 @@ const productSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
+
+productSchema.index({
+  name: "text",
+  description: "text",
+});
+
+productSchema.index({
+  category: 1,
+  gender: 1,
+});
+
+productSchema.index({
+  price: 1,
+});
+
+productSchema.index({
+  isFeatured: 1,
+  isActive: 1,
+});
 
 const Product = mongoose.model("Product", productSchema);
 
