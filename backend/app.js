@@ -11,6 +11,7 @@ import paymentRoutes from "./routes/payment.routes.js";
 import apprenticeshipRoutes from "./routes/apprenticeship.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import designRequestRoutes from "./routes/designRequest.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 import errorHandler from "./middleware/errorHandler.js";
 
@@ -40,6 +41,7 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/design-requests", designRequestRoutes);
 app.use("/api/apprenticeships", apprenticeshipRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Central error handler
 app.use(errorHandler);

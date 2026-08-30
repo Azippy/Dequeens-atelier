@@ -106,6 +106,22 @@ export const createConversation = async (req, res, next) => {
       conversation,
     });
   } catch (error) {
+    if (error.code === 11000) {
+      const existingConversation = await Conversation.findOne({
+        customer: req.user._id,
+        type: "general",
+        status: "open",
+      });
+
+      return res.status(200).json({
+        status: "success",
+
+        message: "Existing conversation found",
+
+        conversation: existingConversation,
+      });
+    }
+
     next(error);
   }
 };

@@ -53,6 +53,21 @@ const conversationSchema = new mongoose.Schema(
   },
 );
 
+conversationSchema.index(
+  {
+    customer: 1,
+    type: 1,
+    status: 1,
+  },
+  {
+    unique: true,
+    partialFilterExpression: {
+      type: "general",
+      status: "open",
+    },
+  },
+);
+
 const Conversation = mongoose.model("Conversation", conversationSchema);
 
 export default Conversation;

@@ -58,6 +58,23 @@ export const createProduct = async (req, res, next) => {
       isBespoke,
       isFeatured,
     });
+    await createAuditLog({
+      admin: req.user._id,
+
+      action: "CREATE",
+
+      resource: "Product",
+
+      resourceId: product._id,
+
+      description: `Created product ${product.name}`,
+
+      metadata: {
+        productName: product.name,
+      },
+
+      req,
+    });
 
     res.status(201).json({
       status: "success",
@@ -243,6 +260,19 @@ export const updateProduct = async (req, res, next) => {
     if (!product) {
       throw new AppError("Product not found", 404);
     }
+    await createAuditLog({
+      admin: req.user._id,
+
+      action: "UPDATE",
+
+      resource: "Product",
+
+      resourceId: product._id,
+
+      description: `Updated product ${product.name}`,
+
+      req,
+    });
 
     res.status(200).json({
       status: "success",
@@ -271,7 +301,19 @@ export const deleteProduct = async (req, res, next) => {
     if (!product) {
       throw new AppError("Product not found", 404);
     }
+    await createAuditLog({
+      admin: req.user._id,
 
+      action: "DELETE",
+
+      resource: "Product",
+
+      resourceId: product._id,
+
+      description: `Deleted product ${product.name}`,
+
+      req,
+    });
     res.status(200).json({
       status: "success",
       message: "Product removed successfully",
