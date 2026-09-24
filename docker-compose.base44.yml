@@ -1,0 +1,38 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - mongo-data:/data/db
+
+  api:
+    image: node:22
+    working_dir: /app/backend
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGO_URI=mongodb://mongo:27017/dequeens-atelier
+      - FRONTEND_URL=https://3000-${BASE44_PUBLIC_HOST_SUFFIX}
+      - PAYSTACK_CALLBACK_URL=https://3000-${BASE44_PUBLIC_HOST_SUFFIX}/api/payments/verify
+      - JWT_EXPIRES_IN=7d
+    env_file:
+      - /run/base44/app.env
+    volumes:
+      - ./backend:/app/backend
+      - api-node-modules:/app/backend/node_modules
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npx nodemon --legacy-watch server.js"
+
+volumes:
+  mongo-data:
+  api-node-modules:

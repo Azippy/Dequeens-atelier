@@ -1,0 +1,58 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "JWT_SECRET",
+      "description": "Signing secret for JWT auth tokens. Generated for development; replace with your own for production.",
+      "requiredAtBoot": true,
+      "generatedForDevelopment": true
+    },
+    {
+      "name": "PAYSTACK_SECRET_KEY",
+      "description": "Paystack Dashboard → Settings → API Keys & Webhooks; required for payment initialization and webhook verification.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "CLOUDINARY_CLOUD_NAME",
+      "description": "Cloudinary Console → Dashboard → Cloud name; required for image uploads.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "CLOUDINARY_API_KEY",
+      "description": "Cloudinary Console → Dashboard → API key; required for image uploads.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "CLOUDINARY_API_SECRET",
+      "description": "Cloudinary Console → Dashboard → API secret; required for image uploads.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "EMAIL_HOST",
+      "description": "Your SMTP/email provider's server hostname; required for transactional emails.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "EMAIL_PORT",
+      "description": "Your SMTP/email provider's port, typically 587 or 465.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "EMAIL_USER",
+      "description": "Your SMTP/email provider's account username.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "EMAIL_PASSWORD",
+      "description": "Your SMTP/email provider's account password or app password.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "EMAIL_FROM",
+      "description": "Verified sender email address with your SMTP provider.",
+      "requiredAtBoot": false
+    }
+  ]
+}
